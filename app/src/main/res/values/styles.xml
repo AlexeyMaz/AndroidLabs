@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="DrawerItemText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="DrawerHeaderText">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>
