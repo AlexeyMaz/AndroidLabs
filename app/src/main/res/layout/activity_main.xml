@@ -8,10 +8,17 @@
     android:layout_height="match_parent"
     android:background="#000">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <!-- Затемнение -->
+        <View
+            android:id="@+id/dimBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/grayContainer"
@@ -46,9 +53,70 @@
 
         </FrameLayout>
 
-        <!-- Дополнительные элементы пользовательского интерфейса могут быть добавлены здесь -->
+        <!-- Container для календаря -->
+        <LinearLayout
+            android:id="@+id/calendarContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <!-- Измененный TextView для отображения выбранной даты -->
+            <TextView
+                android:id="@+id/selected_date_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Выбранная дата: "
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
+
+            <!-- CalendarView -->
+            <CalendarView
+                android:id="@+id/calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </CalendarView>
+
+            <!-- Кнопка "Готово" -->
+            <Button
+                android:id="@+id/btnDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Готово"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onDoneButtonClick"/>
+        </LinearLayout>
+
+        <!-- Компоненты для выбора даты -->
+        <LinearLayout
+            android:id="@+id/calendar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/grayContainer">
+
+            <ImageView
+                android:id="@+id/calendar_open_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/calendar_open_icon"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:onClick="onOpenCalendarClick"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/date_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
