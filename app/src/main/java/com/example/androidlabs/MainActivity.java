@@ -1,5 +1,6 @@
 package com.example.androidlabs;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,7 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,6 +29,19 @@ import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
+    private ActivityResultLauncher<Intent> addTaskLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // Обработка результата
+                    Intent data = result.getData();
+                    if (data != null) {
+                        // Извлеките данные, которые вернула вторая активность
+                        // Например, задача, описание, выполнена ли и дата
+                    }
+                }
+            }
+    );
 
     private CalendarView calendar;
     private TextView dateView;
@@ -36,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView noTasksIcon;
     private String selectedDate;
     private TextView noTasksMessage;
+    private static final int ADD_TASK_REQUEST = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideCalendarPopup();
-                updateDateText(); // Обновление текста с учетом выбранной даты
+                updateDateText();
                 updateNoTaskItems();
             }
         });
@@ -105,16 +123,23 @@ public class MainActivity extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // Пользователь нажал вне области календаря, закрываем его
                     hideCalendarPopup();
-                    updateNoTaskItems(); // Обновление текста с учетом выбранной даты
+                    updateNoTaskItems();
                 }
                 return true;
             }
         });
+
+        ImageView addTaskButton = findViewById(R.id.add_task_icon);
+        addTaskButton.setOnClickListener(view -> startAddTaskActivity());
+    }
+
+    private void startAddTaskActivity() {
+        Intent intent = new Intent(this, AddTaskActivity.class);
+        addTaskLauncher.launch(intent);
     }
 
     // Метод для отображения календарного окна
     private void showCalendarPopup() {
-        // Отображение темного фона (затемнение)
         dimBackground.setVisibility(View.VISIBLE);
 
         // Центрирование календарного окна
@@ -128,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Метод для скрытия календарного окна
     private void hideCalendarPopup() {
-        // Скрытие темного фона (затемнение)
         dimBackground.setVisibility(View.GONE);
 
         // Скрытие календарного окна
@@ -200,20 +224,35 @@ public class MainActivity extends AppCompatActivity {
         return false;  // Подставьте свою логику
     }
 
-//    public void onAddTaskClick(View view) {
-//        // Создание интента для запуска новой активности (AddTaskActivity)
-//        Intent intent = new Intent(this, AddTaskActivity.class);
-//
-//        // Передача текущей выбранной даты в новую активность
-//        intent.putExtra("selectedDate", selectedDate);
-//
-//        // Запуск новой активности
-//        startActivityForResult(intent, ADD_TASK_REQUEST);
-//    }
+    public void onAddTaskClick(View view) {
+        // Создание интента для запуска новой активности (AddTaskActivity)
+        Intent intent = new Intent(this, AddTaskActivity.class);
+
+        // Передача текущей выбранной даты в новую активность
+        intent.putExtra("selectedDate", selectedDate);
+
+        // Запуск новой активности
+        startActivityForResult(intent, ADD_TASK_REQUEST);
+    }
 
     // Метод для обработки нажатия на кнопку меню
     public void onMenuButtonClick(View view) {
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_TASK_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            // Получение данных о задаче из AddTaskActivity
+            String description = data.getStringExtra("description");
+            boolean isDone = data.getBooleanExtra("isDone", false);
+            String selectedDate = data.getStringExtra("selectedDate");
+
+            // Теперь у вас есть данные о новой задаче, которые вы можете использовать
+            // для создания соответствующего объекта задачи и обновления интерфейса.
+        }
     }
 }

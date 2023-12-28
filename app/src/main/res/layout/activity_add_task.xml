@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Описание задачи"
+        android:textColorHint="#EBEFD7"
+        android:textSize="22sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <CheckBox
+        android:id="@+id/doneCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выполнено"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/descriptionEditText"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <Button
+        android:id="@+id/setDateButton"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/doneCheckBox"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="onSetDateClick"
+        android:text="Выбрать дату"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:backgroundTint="#2195F2"
+        android:radius="20dp" />
+
+    <Button
+        android:id="@+id/saveTaskButton"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setDateButton"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="onSaveTaskClick"
+        android:text="Сохранить"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:backgroundTint="#2195F2"
+        android:radius="20dp"/>
+</RelativeLayout>
